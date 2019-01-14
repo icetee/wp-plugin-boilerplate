@@ -1,0 +1,1 @@
+# Modern WordPress Plugin Boilerplate

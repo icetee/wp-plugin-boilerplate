@@ -1,0 +1,26 @@
+{
+  "name": "plugin-creator/plugin-name",
+  "description": "Follow the PSR standard. (Even with WordPress)",
+  "type": "project",
+  "license": "GPLv2",
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "PluginCreator\\PluginName\\": "src/"
+    }
+  },
+  "scripts": {
+    "cs-check": "phpcs",
+    "cs-fix": "phpcbf",
+    "test": "phpunit --colors=always",
+    "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
+  },
+  "require": {
+    "php": ">=7.1",
+    "downshiftorg/wp-http": "dev-master"
+  },
+  "require-dev": {
+    "zendframework/zend-coding-standard": "dev-develop",
+    "phpunit/phpunit": "^7"
+  }
+}
