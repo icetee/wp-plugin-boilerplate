@@ -4,21 +4,26 @@ declare(strict_types=1);
 
 namespace PluginCreator\PluginName;
 
+use WP_CLI;
+use WP_CLI_Command;
+
+use function class_exists;
+
 class Loader
 {
     /**
      * The array of actions registered with WordPress.
      *
-     * @access   protected
-     * @var      array    $actions    The actions registered with WordPress to fire when the plugin loads.
+     * @access protected
+     * @var    array     $actions The actions registered with WordPress to fire when the plugin loads.
      */
     protected $actions;
 
     /**
      * The array of filters registered with WordPress.
      *
-     * @access   protected
-     * @var      array    $filters    The filters registered with WordPress to fire when the plugin loads.
+     * @access protected
+     * @var    array     $filters The filters registered with WordPress to fire when the plugin loads.
      */
     protected $filters;
 
@@ -57,6 +62,15 @@ class Loader
     public function addFilter($hook, $component, $callback, $priority = 10, $acceptedArgs = 1)
     {
         $this->filters = $this->add($this->filters, $hook, $component, $callback, $priority, $acceptedArgs);
+    }
+
+    public function addCliCommand($pluginName, WP_CLI_Command $command)
+    {
+        if (! class_exists('WP_CLI')) {
+            return;
+        }
+
+        WP_CLI::add_command($pluginName, $command);
     }
 
     /**

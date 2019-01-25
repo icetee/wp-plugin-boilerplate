@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace PluginCreator\PluginName;
 
 use function dirname;
+use function load_plugin_textdomain;
+use function plugin_basename;
 
 class I18n
 {
     /**
      * Unique identifier for retrieving translated strings.
      *
-     * @access   protected
-     * @var      string    $domain    Unique identifier for retrieving translated strings.
+     * @access protected
+     * @var    string    $domain Unique identifier for retrieving translated strings.
      */
     protected $domain;
 

@@ -4,21 +4,24 @@ declare(strict_types=1);
 
 namespace PluginCreator\PluginName\Admin;
 
+use function wp_enqueue_style;
+use function wp_enqueue_script;
+
 class PluginNameAdmin
 {
     /**
      * The ID of this plugin.
      *
-     * @access   private
-     * @var      string    $pluginName    The ID of this plugin.
+     * @access private
+     * @var    string  $pluginName The ID of this plugin.
      */
     private $pluginName;
 
     /**
      * The version of this plugin.
      *
-     * @access   private
-     * @var      string    $version    The current version of this plugin.
+     * @access private
+     * @var    string  $version The current version of this plugin.
      */
     private $version;
 

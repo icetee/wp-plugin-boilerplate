@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace PluginCreator\PluginName;
 
-class PluginNameTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class PluginNameTest extends TestCase
 {
     private $underTest;
 

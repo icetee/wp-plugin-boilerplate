@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace PluginCreator\PluginName;
 
 use PluginCreator\PluginName\Admin\PluginNameAdmin;
+use PluginCreator\PluginName\Cli\PluginNameCli;
 use PluginCreator\PluginName\Client\PluginNameClient;
+
+use  function class_exists;
 
 class PluginName
 {
@@ -13,32 +16,32 @@ class PluginName
      * The loader that's responsible for maintaining and registering all hooks that power
      * the plugin.
      *
-     * @access   protected
-     * @var      Loader    $loader    Maintains and registers all hooks for the plugin.
+     * @access protected
+     * @var    Loader    $loader Maintains and registers all hooks for the plugin.
      */
     protected $loader;
 
     /**
      * The unique identifier of this plugin.
      *
-     * @access   protected
-     * @var      string    $pluginName    The string used to uniquely identify this plugin.
+     * @access protected
+     * @var    string    $pluginName The string used to uniquely identify this plugin.
      */
     protected $pluginName;
 
     /**
      * Unique identifier for retrieving translated strings.
      *
-     * @access   protected
-     * @var      string    $domain    Unique identifier for retrieving translated strings.
+     * @access protected
+     * @var    string    $domain Unique identifier for retrieving translated strings.
      */
     protected $domain;
 
     /**
      * The current version of the plugin.
      *
-     * @access   protected
-     * @var      string    $version    The current version of the plugin.
+     * @access protected
+     * @var    string    $version The current version of the plugin.
      */
     protected $version;
 
@@ -62,6 +65,7 @@ class PluginName
         $this->setLocale();
         $this->defineAdminHooks();
         $this->defineClientHooks();
+        $this->defineCliCommandHooks();
     }
 
     /**
@@ -77,7 +81,7 @@ class PluginName
      * Create an instance of the loader which will be used to register the hooks
      * with WordPress.
      *
-     * @access   private
+     * @access private
      */
     private function loadDependencies()
     {
@@ -90,41 +94,58 @@ class PluginName
      * Uses the pluginName_i18n class in order to set the domain and to register the hook
      * with WordPress.
      *
-     * @access   private
+     * @access private
      */
     private function setLocale()
     {
         $i18n = new I18n($this->getDomain());
 
-        $this->loader->addAction('plugins_loaded', $i18n, 'load_plugin_textdomain');
+        $this->loader->addAction('plugins_loaded', $i18n, 'loadPluginTextdomain');
     }
 
     /**
      * Register all of the hooks related to the admin area functionality
      * of the plugin.
      *
-     * @access   private
+     * @access private
      */
     private function defineAdminHooks()
     {
         $admin = new PluginNameAdmin($this->getPluginName(), $this->getVersion());
 
-        $this->loader->addAction('admin_enqueue_scripts', $admin, 'enqueue_styles');
-        $this->loader->addAction('admin_enqueue_scripts', $admin, 'enqueue_scripts');
+        $this->loader->addAction('admin_enqueue_scripts', $admin, 'enqueueStyles');
+        $this->loader->addAction('admin_enqueue_scripts', $admin, 'enqueueScripts');
     }
 
     /**
      * Register all of the hooks related to the client-facing functionality
      * of the plugin.
      *
-     * @access   private
+     * @access private
      */
     private function defineClientHooks()
     {
         $client = new PluginNameClient($this->getPluginName(), $this->getVersion());
 
-        $this->loader->addAction('wp_enqueue_scripts', $client, 'enqueue_styles');
-        $this->loader->addAction('wp_enqueue_scripts', $client, 'enqueue_scripts');
+        $this->loader->addAction('wp_enqueue_scripts', $client, 'enqueueStyles');
+        $this->loader->addAction('wp_enqueue_scripts', $client, 'enqueueScripts');
+    }
+
+    /**
+     * Register all of the hooks related to the client-facing functionality
+     * of the plugin.
+     *
+     * @access private
+     */
+    private function defineCliCommandHooks()
+    {
+        if (! class_exists('WP_CLI')) {
+            return;
+        }
+
+        $cli = new PluginNameCli($this->getPluginName(), $this->getVersion());
+
+        $this->loader->addCliCommand($this->getPluginName(), $cli);
     }
 
     /**
@@ -139,7 +160,7 @@ class PluginName
      * The name of the plugin used to uniquely identify it within the context of
      * WordPress and to define internationalization functionality.
      *
-     * @return    string    The name of the plugin.
+     * @return string The name of the plugin.
      */
     public function getPluginName()
     {
@@ -149,7 +170,7 @@ class PluginName
     /**
      * Unique identifier for retrieving translated strings.
      *
-     * @return    string    $domain    Unique identifier for retrieving translated strings.
+     * @return string $domain Unique identifier for retrieving translated strings.
      */
     public function getDomain()
     {
@@ -159,7 +180,7 @@ class PluginName
     /**
      * The reference to the class that orchestrates the hooks with the plugin.
      *
-     * @return    Loader    Orchestrates the hooks of the plugin.
+     * @return Loader Orchestrates the hooks of the plugin.
      */
     public function getLoader()
     {
@@ -169,7 +190,7 @@ class PluginName
     /**
      * Retrieve the version number of the plugin.
      *
-     * @return    string    The version number of the plugin.
+     * @return string The version number of the plugin.
      */
     public function getVersion()
     {

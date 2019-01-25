@@ -20,7 +20,7 @@
     "downshiftorg/wp-http": "dev-master"
   },
   "require-dev": {
-    "zendframework/zend-coding-standard": "dev-develop",
-    "phpunit/phpunit": "^7"
+    "phpunit/phpunit": "^7",
+    "zendframework/zend-coding-standard": "dev-develop"
   }
 }

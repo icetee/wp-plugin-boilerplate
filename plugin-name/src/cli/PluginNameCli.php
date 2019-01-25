@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PluginCreator\PluginName\Client;
+namespace PluginCreator\PluginName\Cli;
 
-class PluginNameClient
+use WP_CLI;
+use WP_CLI_Command;
+
+class PluginNameCli extends WP_CLI_Command
 {
     /**
      * The ID of this plugin.
@@ -35,22 +38,12 @@ class PluginNameClient
     }
 
     /**
-     * Register the stylesheets for the client-facing side of the site.
+     * Example Hello Plugin Name custom WP-CLI command
+     *
+     * @param array $args      Command arguments array.
+     * @param array $assocArgs Associated arguments array.
      */
-    public function enqueueStyles()
-    {
-        $cssPath = plugin_dir_url(__FILE__) . 'css/';
-
-        wp_enqueue_style($this->pluginName, $cssPath . 'plugin-name-client.css', [], $this->version, 'all');
-    }
-
-    /**
-     * Register the JavaScript for the client-facing side of the site.
-     */
-    public function enqueueScripts()
-    {
-        $jsPath = plugin_dir_url(__FILE__) . 'js/';
-
-        wp_enqueue_script($this->pluginName, $jsPath . 'plugin-name-client.js', ['jquery'], $this->version, false);
+    public function hello($args, $assocArgs) {
+        WP_CLI::log('Hello ' . $this->pluginName);
     }
 }
