@@ -28,12 +28,21 @@ class Loader
     protected $filters;
 
     /**
+     * The array of shortcodes registered with WordPress.
+     *
+     * @access protected
+     * @var    array     $shortcodes The shortcodes registered with WordPress to fire when the plugin loads.
+     */
+    protected $shortcodes;
+
+    /**
      * Initialize the collections used to maintain the actions and filters.
      */
     public function __construct()
     {
-        $this->actions = [];
-        $this->filters = [];
+        $this->actions    = [];
+        $this->filters    = [];
+        $this->shortcodes = [];
     }
 
     /**
@@ -62,6 +71,18 @@ class Loader
     public function addFilter($hook, $component, $callback, $priority = 10, $acceptedArgs = 1)
     {
         $this->filters = $this->add($this->filters, $hook, $component, $callback, $priority, $acceptedArgs);
+    }
+
+    /**
+     * Add a new shortcode to the collection to be registered with WordPress
+     *
+     * @param string $tag       The name of the new shortcode.
+     * @param object $component A reference to the instance of the object on which the shortcode is defined.
+     * @param string $callback  The name of the function that defines the shortcode.
+     */
+    public function add_shortcode($tag, $component, $callback, $priority = 10, $acceptedArgs = 1)
+    {
+        $this->shortcodes = $this->add($this->shortcodes, $tag, $component, $callback, $priority, $acceptedArgs);
     }
 
     public function addCliCommand($pluginName, WP_CLI_Command $command)
@@ -115,6 +136,10 @@ class Loader
             $function = [$hook['component'], $hook['callback']];
 
             add_action($hook['hook'], $function, $hook['priority'], $hook['accepted_args']);
+        }
+
+        foreach ($this->shortcodes as $hook) {
+            add_shortcode($hook['hook'], [$hook['component'], $hook['callback']]);
         }
     }
 }
