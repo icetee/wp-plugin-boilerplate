@@ -4,7 +4,9 @@
 PLUGIN_NAME_HYPEN="plugin-name"
 PLUGIN_CREATOR_HYPEN="plugin-creator"
 PLUGIN_NAME_CAMEL_CASE="PluginName"
+PLUGIN_NAME_CAMEL_CASE_WITH_SPACE="Plugin Name"
 PLUGIN_CREATOR_CAMEL_CASE="PluginCreator"
+PLUGIN_TAGS="comments, spam"
 PLUGIN_NAME="WordPress Plugin Boilerplate"
 PLUGIN_URI="http://example.com/plugin-name-uri/"
 PLUGIN_VERSION="1.0.0"
@@ -37,7 +39,12 @@ find 'plugin-name.php' -type f ! -path "./vendor/*" ! -path "composer.lock" -exe
 find . -type f ! -path "./vendor/*" ! -path "composer.lock" -exec sed -i '' -e "s/plugin-name/$PLUGIN_NAME_HYPEN/" {} \;
 find . -type f ! -path "./vendor/*" ! -path "composer.lock" -exec sed -i '' -e "s/plugin-creator/$PLUGIN_CREATOR_HYPEN/" {} \;
 find . -type f ! -path "./vendor/*" ! -path "composer.lock" -exec sed -i '' -e "s/PluginName/$PLUGIN_NAME_CAMEL_CASE/" {} \;
+find . -type f ! -path "./vendor/*" ! -path "composer.lock" -exec sed -i '' -e "s/PluginNameAdmin/${PLUGIN_NAME_CAMEL_CASE}Admin/" {} \;
+find . -type f ! -path "./vendor/*" ! -path "composer.lock" -exec sed -i '' -e "s/PluginNameCli/${PLUGIN_NAME_CAMEL_CASE}Cli/" {} \;
+find . -type f ! -path "./vendor/*" ! -path "composer.lock" -exec sed -i '' -e "s/PluginNameClient/${PLUGIN_NAME_CAMEL_CASE}Client/" {} \;
+find . -type f ! -path "./vendor/*" ! -path "composer.lock" -exec sed -i '' -e "s/Plugin Name/$PLUGIN_NAME_CAMEL_CASE_WITH_SPACE/" {} \;
 find . -type f ! -path "./vendor/*" ! -path "composer.lock" -exec sed -i '' -e "s/PluginCreator/$PLUGIN_CREATOR_CAMEL_CASE/" {} \;
+find . -type f ! -path "./vendor/*" ! -path "composer.lock" -exec sed -i '' -e "s/comments, spam/$PLUGIN_TAGS/" {} \;
 
 find . -type f ! -path "./vendor/*" ! -path "composer.lock" -name '*plugin-name*' | while read FILE ; do
     newfile="$(echo ${FILE} | sed -e "s/plugin-name/$PLUGIN_NAME_HYPEN/")" ;
