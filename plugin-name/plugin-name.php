@@ -33,12 +33,12 @@ require 'vendor/autoload.php';
 /**
  * The code that runs during plugin activation.
  */
-register_activation_hook(__FILE__, Activator::activate());
+register_activation_hook(__FILE__, [Activator::class, 'activate']);
 
 /**
  * The code that runs during plugin deactivation.
  */
-register_activation_hook(__FILE__, Deactivator::deactivate());
+register_deactivation_hook(__FILE__, [Deactivator::class, 'deactivate']);
 
 /**
  * The core plugin class that is used to define internationalization,
